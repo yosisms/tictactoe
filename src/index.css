@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+:root {
+  --cyan-neon: #22d3ee;
+  --pink-neon: #f472b6;
+  --bg-dark: #0f172a;
+  --bg-card: #1e293b;
+  --bg-cell: #334155;
+}
+
+body {
+  background: var(--bg-dark);
+  min-height: 100vh;
+}
+
+/* Symbol pop-in animation */
+@keyframes pop-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-pop-in {
+  animation: pop-in 0.3s ease-out forwards;
+}
+
+/* Win pulse animation */
+@keyframes win-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.animate-win-pulse {
+  animation: win-pulse 0.6s ease-in-out infinite;
+}
+
+/* Glow effects */
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.4),
+              0 0 40px rgba(34, 211, 238, 0.2);
+}
+
+.glow-pink {
+  box-shadow: 0 0 20px rgba(244, 114, 182, 0.4),
+              0 0 40px rgba(244, 114, 182, 0.2);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.8),
+               0 0 20px rgba(34, 211, 238, 0.4);
+}
+
+.text-glow-pink {
+  text-shadow: 0 0 10px rgba(244, 114, 182, 0.8),
+               0 0 20px rgba(244, 114, 182, 0.4);
+}
