@@ -2,12 +2,12 @@ export function Cell({ value, onClick, isWinning, disabled }) {
   const baseClasses = `
     aspect-square w-full
     flex items-center justify-center
-    text-5xl sm:text-6xl md:text-7xl font-bold
-    rounded-xl
+    text-3xl sm:text-5xl md:text-6xl font-bold
+    rounded-lg sm:rounded-xl
     transition-all duration-200
     cursor-pointer
     bg-slate-700/50
-    border-2 border-slate-600/50
+    border border-slate-600/50 sm:border-2
   `;
 
   const hoverClasses =
