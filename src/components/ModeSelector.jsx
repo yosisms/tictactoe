@@ -1,6 +1,6 @@
 export function ModeSelector({ onSelectMode }) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-2 sm:p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-start sm:justify-center pt-2 pb-2 px-2 sm:p-4">
       <div className="w-full max-w-md space-y-3 sm:space-y-6">
         {/* Title */}
         <h1 className="text-4xl sm:text-6xl font-bold text-center bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent mb-2 sm:mb-3">
