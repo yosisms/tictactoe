@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { getAIMove } from "../utils/aiPlayer";
 
 const WINNING_LINES = [
   [0, 1, 2], // top row
@@ -11,12 +12,13 @@ const WINNING_LINES = [
   [2, 4, 6], // anti-diagonal
 ];
 
-export function useGameLogic() {
+export function useGameLogic(mode = "multi", difficulty = "hard") {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isXNext, setIsXNext] = useState(true);
   const [scores, setScores] = useState({ X: 0, O: 0, draws: 0 });
   const [winningLine, setWinningLine] = useState(null);
   const [gameOver, setGameOver] = useState(false);
+  const [isAIThinking, setIsAIThinking] = useState(false);
 
   const checkWinner = useCallback((squares) => {
     for (const line of WINNING_LINES) {
@@ -36,9 +38,40 @@ export function useGameLogic() {
     return squares.every((cell) => cell !== null);
   }, []);
 
+  const makeAIMove = useCallback(
+    async (boardState) => {
+      setIsAIThinking(true);
+      const aiMoveIndex = await getAIMove(boardState, difficulty);
+      setIsAIThinking(false);
+
+      const newBoard = [...boardState];
+      newBoard[aiMoveIndex] = "O";
+
+      const result = checkWinner(newBoard);
+      if (result) {
+        setWinningLine(result.line);
+        setGameOver(true);
+        setScores((prev) => ({
+          ...prev,
+          [result.winner]: prev[result.winner] + 1,
+        }));
+      } else if (checkDraw(newBoard)) {
+        setGameOver(true);
+        setScores((prev) => ({
+          ...prev,
+          draws: prev.draws + 1,
+        }));
+      } else {
+        setIsXNext(true);
+      }
+      setBoard(newBoard);
+    },
+    [difficulty, checkWinner, checkDraw],
+  );
+
   const handleCellClick = useCallback(
     (index) => {
-      if (board[index] || gameOver) return;
+      if (board[index] || gameOver || isAIThinking) return;
 
       const newBoard = [...board];
       newBoard[index] = isXNext ? "X" : "O";
@@ -60,9 +93,23 @@ export function useGameLogic() {
         }));
       } else {
         setIsXNext(!isXNext);
+
+        // If in single-player mode and it's AI's turn, make AI move
+        if (mode === "single") {
+          makeAIMove(newBoard);
+        }
       }
     },
-    [board, isXNext, gameOver, checkWinner, checkDraw],
+    [
+      board,
+      isXNext,
+      gameOver,
+      isAIThinking,
+      mode,
+      checkWinner,
+      checkDraw,
+      makeAIMove,
+    ],
   );
 
   const resetGame = useCallback(() => {
@@ -94,6 +141,9 @@ export function useGameLogic() {
     scores,
     winningLine,
     gameOver,
+    isAIThinking,
+    mode,
+    difficulty,
     handleCellClick,
     resetGame,
     resetScores,
