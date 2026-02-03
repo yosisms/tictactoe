@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
 const WINNING_LINES = [
   [0, 1, 2], // top row
@@ -21,7 +21,11 @@ export function useGameLogic() {
   const checkWinner = useCallback((squares) => {
     for (const line of WINNING_LINES) {
       const [a, b, c] = line;
-      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      if (
+        squares[a] &&
+        squares[a] === squares[b] &&
+        squares[a] === squares[c]
+      ) {
         return { winner: squares[a], line };
       }
     }
@@ -29,34 +33,37 @@ export function useGameLogic() {
   }, []);
 
   const checkDraw = useCallback((squares) => {
-    return squares.every(cell => cell !== null);
+    return squares.every((cell) => cell !== null);
   }, []);
 
-  const handleCellClick = useCallback((index) => {
-    if (board[index] || gameOver) return;
+  const handleCellClick = useCallback(
+    (index) => {
+      if (board[index] || gameOver) return;
 
-    const newBoard = [...board];
-    newBoard[index] = isXNext ? 'X' : 'O';
-    setBoard(newBoard);
+      const newBoard = [...board];
+      newBoard[index] = isXNext ? "X" : "O";
+      setBoard(newBoard);
 
-    const result = checkWinner(newBoard);
-    if (result) {
-      setWinningLine(result.line);
-      setGameOver(true);
-      setScores(prev => ({
-        ...prev,
-        [result.winner]: prev[result.winner] + 1
-      }));
-    } else if (checkDraw(newBoard)) {
-      setGameOver(true);
-      setScores(prev => ({
-        ...prev,
-        draws: prev.draws + 1
-      }));
-    } else {
-      setIsXNext(!isXNext);
-    }
-  }, [board, isXNext, gameOver, checkWinner, checkDraw]);
+      const result = checkWinner(newBoard);
+      if (result) {
+        setWinningLine(result.line);
+        setGameOver(true);
+        setScores((prev) => ({
+          ...prev,
+          [result.winner]: prev[result.winner] + 1,
+        }));
+      } else if (checkDraw(newBoard)) {
+        setGameOver(true);
+        setScores((prev) => ({
+          ...prev,
+          draws: prev.draws + 1,
+        }));
+      } else {
+        setIsXNext(!isXNext);
+      }
+    },
+    [board, isXNext, gameOver, checkWinner, checkDraw],
+  );
 
   const resetGame = useCallback(() => {
     setBoard(Array(9).fill(null));
@@ -73,12 +80,12 @@ export function useGameLogic() {
   const getStatus = useCallback(() => {
     const result = checkWinner(board);
     if (result) {
-      return { type: 'win', winner: result.winner };
+      return { type: "win", winner: result.winner };
     }
     if (checkDraw(board)) {
-      return { type: 'draw' };
+      return { type: "draw" };
     }
-    return { type: 'playing', currentPlayer: isXNext ? 'X' : 'O' };
+    return { type: "playing", currentPlayer: isXNext ? "X" : "O" };
   }, [board, isXNext, checkWinner, checkDraw]);
 
   return {

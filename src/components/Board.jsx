@@ -1,4 +1,4 @@
-import { Cell } from './Cell';
+import { Cell } from "./Cell";
 
 export function Board({ board, onCellClick, winningLine, gameOver }) {
   return (
