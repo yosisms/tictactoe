@@ -10,17 +10,19 @@ export function Cell({ value, onClick, isWinning, disabled }) {
     border-2 border-slate-600/50
   `;
 
-  const hoverClasses = !value && !disabled 
-    ? 'hover:bg-slate-600/70 hover:border-slate-500 hover:scale-105' 
-    : '';
+  const hoverClasses =
+    !value && !disabled
+      ? "hover:bg-slate-600/70 hover:border-slate-500 hover:scale-105"
+      : "";
 
-  const winClasses = isWinning ? 'animate-win-pulse' : '';
-  
-  const colorClasses = value === 'X' 
-    ? 'text-cyan-400 text-glow-cyan' 
-    : value === 'O' 
-    ? 'text-pink-400 text-glow-pink' 
-    : '';
+  const winClasses = isWinning ? "animate-win-pulse" : "";
+
+  const colorClasses =
+    value === "X"
+      ? "text-cyan-400 text-glow-cyan"
+      : value === "O"
+        ? "text-pink-400 text-glow-pink"
+        : "";
 
   return (
     <button
@@ -28,11 +30,7 @@ export function Cell({ value, onClick, isWinning, disabled }) {
       disabled={disabled || !!value}
       className={`${baseClasses} ${hoverClasses} ${winClasses} ${colorClasses}`}
     >
-      {value && (
-        <span className="animate-pop-in">
-          {value}
-        </span>
-      )}
+      {value && <span className="animate-pop-in">{value}</span>}
     </button>
   );
 }

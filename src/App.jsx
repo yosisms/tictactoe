@@ -1,8 +1,8 @@
-import { useGameLogic } from './hooks/useGameLogic';
-import { Board } from './components/Board';
-import { StatusBar } from './components/StatusBar';
-import { ScoreBoard } from './components/ScoreBoard';
-import { ResetButton } from './components/ResetButton';
+import { useGameLogic } from "./hooks/useGameLogic";
+import { Board } from "./components/Board";
+import { StatusBar } from "./components/StatusBar";
+import { ScoreBoard } from "./components/ScoreBoard";
+import { ResetButton } from "./components/ResetButton";
 
 function App() {
   const {

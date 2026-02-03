@@ -1,16 +1,18 @@
 export function StatusBar({ status }) {
-  if (status.type === 'win') {
-    const isX = status.winner === 'X';
+  if (status.type === "win") {
+    const isX = status.winner === "X";
     return (
-      <div className={`text-2xl sm:text-3xl font-bold text-center py-4 ${
-        isX ? 'text-cyan-400 text-glow-cyan' : 'text-pink-400 text-glow-pink'
-      }`}>
+      <div
+        className={`text-2xl sm:text-3xl font-bold text-center py-4 ${
+          isX ? "text-cyan-400 text-glow-cyan" : "text-pink-400 text-glow-pink"
+        }`}
+      >
         🎉 Player {status.winner} Wins! 🎉
       </div>
     );
   }
 
-  if (status.type === 'draw') {
+  if (status.type === "draw") {
     return (
       <div className="text-2xl sm:text-3xl font-bold text-center py-4 text-slate-400">
         🤝 It's a Draw! 🤝
@@ -18,11 +20,15 @@ export function StatusBar({ status }) {
     );
   }
 
-  const isX = status.currentPlayer === 'X';
+  const isX = status.currentPlayer === "X";
   return (
     <div className="text-xl sm:text-2xl font-semibold text-center py-4 text-slate-300">
-      Player{' '}
-      <span className={isX ? 'text-cyan-400 text-glow-cyan' : 'text-pink-400 text-glow-pink'}>
+      Player{" "}
+      <span
+        className={
+          isX ? "text-cyan-400 text-glow-cyan" : "text-pink-400 text-glow-pink"
+        }
+      >
         {status.currentPlayer}
       </span>
       's turn
