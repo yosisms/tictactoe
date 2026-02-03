@@ -52,6 +52,7 @@ function getAvailableMoves(squares) {
  * @param {number} depth - Current depth in the game tree
  * @param {number} alpha - Alpha value for pruning
  * @param {number} beta - Beta value for pruning
+ * @param {number} maxDepth - Maximum depth to search (default: Infinity)
  * @returns {number} - Score of the position
  */
 function minimax(
@@ -60,6 +61,7 @@ function minimax(
   depth = 0,
   alpha = -Infinity,
   beta = Infinity,
+  maxDepth = Infinity,
 ) {
   const winner = checkWinner(squares);
 
@@ -67,6 +69,9 @@ function minimax(
   if (winner === "O") return 10 - depth; // AI wins (sooner is better)
   if (winner === "X") return depth - 10; // Human wins (later is better for human)
   if (isBoardFull(squares)) return 0; // Draw
+
+  // Stop searching if we've reached max depth
+  if (depth >= maxDepth) return 0; // Neutral position (don't know, can't evaluate further)
 
   const availableMoves = getAvailableMoves(squares);
 
@@ -76,7 +81,7 @@ function minimax(
 
     for (const move of availableMoves) {
       squares[move] = "O";
-      const score = minimax(squares, false, depth + 1, alpha, beta);
+      const score = minimax(squares, false, depth + 1, alpha, beta, maxDepth);
       squares[move] = null;
 
       maxScore = Math.max(maxScore, score);
@@ -93,7 +98,7 @@ function minimax(
 
     for (const move of availableMoves) {
       squares[move] = "X";
-      const score = minimax(squares, true, depth + 1, alpha, beta);
+      const score = minimax(squares, true, depth + 1, alpha, beta, maxDepth);
       squares[move] = null;
 
       minScore = Math.min(minScore, score);
@@ -108,11 +113,54 @@ function minimax(
 }
 
 /**
- * Find the best move for the AI
+ * Get a random move for easy difficulty
  * @param {Array} board - The game board
+ * @returns {number} - Index of a random move
+ */
+function getRandomMove(board) {
+  const availableMoves = getAvailableMoves(board);
+  return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+}
+
+/**
+ * Like playing against a kid - intentionally weak but not stupid
+ * 60% random, 40% smart (makes obvious good moves)
+ * @param {Array} board - The game board
+ * @returns {number} - Index of the move
+ */
+function getEasyMove(board) {
+  const availableMoves = getAvailableMoves(board);
+
+  // If board is empty, play center or corner
+  if (availableMoves.length === 9) {
+    return [4, 0, 2, 6, 8][Math.floor(Math.random() * 5)];
+  }
+
+  // 40% chance to make a smart move (block or win)
+  if (Math.random() < 0.4) {
+    return findBestMove(board, 2); // Look ahead only 1-2 moves
+  }
+
+  // 60% chance to just pick randomly
+  return getRandomMove(board);
+}
+
+/**
+ * Medium difficulty - looks ahead 3 moves (faster, less perfect)
+ * @param {Array} board - The game board
+ * @returns {number} - Index of the best move with limited depth
+ */
+function getMediumMove(board) {
+  return findBestMove(board, 3); // Limited depth for faster thinking
+}
+
+/**
+ * Find the best move for the AI (with optional depth limit)
+ * @param {Array} board - The game board
+ * @param {number} maxDepth - Maximum depth to search (default: unlimited = hard)
  * @returns {number} - Index of the best move
  */
-export function findBestMove(board) {
+function findBestMove(board, maxDepth = Infinity) {
   const availableMoves = getAvailableMoves(board);
 
   // If board is empty, play center or corner for variety
@@ -134,7 +182,7 @@ export function findBestMove(board) {
     const newBoard = [...board];
     newBoard[move] = "O"; // AI is 'O'
 
-    const score = minimax(newBoard, false); // Next turn is human (minimizing)
+    const score = minimax(newBoard, false, 0, -Infinity, Infinity, maxDepth);
 
     if (score > bestScore) {
       bestScore = score;
@@ -146,13 +194,32 @@ export function findBestMove(board) {
 }
 
 /**
+ * Get AI move based on difficulty level
+ * @param {Array} board - The game board
+ * @param {string} difficulty - 'easy', 'medium', or 'hard' (default: 'hard')
+ * @returns {number} - Index of the move
+ */
+export function getAIMoveByDifficulty(board, difficulty = "hard") {
+  switch (difficulty) {
+    case "easy":
+      return getEasyMove(board);
+    case "medium":
+      return getMediumMove(board);
+    case "hard":
+    default:
+      return findBestMove(board);
+  }
+}
+
+/**
  * Get AI move with optional delay for better UX
  * @param {Array} board - The game board
+ * @param {string} difficulty - 'easy', 'medium', or 'hard' (default: 'hard')
  * @param {number} delayMs - Delay in milliseconds (default 400ms)
  * @returns {Promise<number>} - Promise that resolves to the move index
  */
-export async function getAIMove(board, delayMs = 400) {
+export async function getAIMove(board, difficulty = "hard", delayMs = 400) {
   // Add slight delay to make AI feel more natural
   await new Promise((resolve) => setTimeout(resolve, delayMs));
-  return findBestMove(board);
+  return getAIMoveByDifficulty(board, difficulty);
 }

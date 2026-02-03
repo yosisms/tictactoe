@@ -34,7 +34,8 @@ body {
 
 /* Win pulse animation */
 @keyframes win-pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
@@ -50,21 +51,25 @@ body {
 
 /* Glow effects */
 .glow-cyan {
-  box-shadow: 0 0 20px rgba(34, 211, 238, 0.4),
-              0 0 40px rgba(34, 211, 238, 0.2);
+  box-shadow:
+    0 0 20px rgba(34, 211, 238, 0.4),
+    0 0 40px rgba(34, 211, 238, 0.2);
 }
 
 .glow-pink {
-  box-shadow: 0 0 20px rgba(244, 114, 182, 0.4),
-              0 0 40px rgba(244, 114, 182, 0.2);
+  box-shadow:
+    0 0 20px rgba(244, 114, 182, 0.4),
+    0 0 40px rgba(244, 114, 182, 0.2);
 }
 
 .text-glow-cyan {
-  text-shadow: 0 0 10px rgba(34, 211, 238, 0.8),
-               0 0 20px rgba(34, 211, 238, 0.4);
+  text-shadow:
+    0 0 10px rgba(34, 211, 238, 0.8),
+    0 0 20px rgba(34, 211, 238, 0.4);
 }
 
 .text-glow-pink {
-  text-shadow: 0 0 10px rgba(244, 114, 182, 0.8),
-               0 0 20px rgba(244, 114, 182, 0.4);
+  text-shadow:
+    0 0 10px rgba(244, 114, 182, 0.8),
+    0 0 20px rgba(244, 114, 182, 0.4);
 }
