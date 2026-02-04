@@ -74,15 +74,15 @@ function App() {
 
   // Show game
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-start sm:justify-center pt-2 pb-2 sm:p-4 px-2">
-      <div className="w-full max-w-md space-y-2 sm:space-y-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-md space-y-6">
         {/* Title */}
-        <h1 className="text-3xl sm:text-5xl font-bold text-center bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
+        <h1 className="text-4xl sm:text-6xl font-bold text-center bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
           Tic Tac Toe
         </h1>
 
         {/* Game Mode & Difficulty Info */}
-        <div className="text-center text-slate-400 text-xs sm:text-sm">
+        <div className="text-center text-slate-400 text-sm">
           {mode === "single" && (
             <p>
               vs Computer · <span className="capitalize">{difficulty}</span>
@@ -91,18 +91,18 @@ function App() {
           {mode === "multi" && <p>vs Player</p>}
         </div>
 
-        {/* Score Board */}
-        <ScoreBoard scores={scores} />
+        {/* Score Board + Status Bar grouped */}
+        <div className="space-y-3">
+          <ScoreBoard scores={scores} />
+          <StatusBar status={status} />
 
-        {/* Status Bar */}
-        <StatusBar status={status} />
-
-        {/* AI Thinking Indicator */}
-        {isAIThinking && (
-          <div className="text-center text-slate-400 text-xs sm:text-sm animate-pulse">
-            AI is thinking...
-          </div>
-        )}
+          {/* AI Thinking Indicator */}
+          {isAIThinking && (
+            <div className="text-center text-slate-400 text-sm animate-pulse py-2">
+              🤖 AI is thinking...
+            </div>
+          )}
+        </div>
 
         {/* Game Board */}
         <Board
